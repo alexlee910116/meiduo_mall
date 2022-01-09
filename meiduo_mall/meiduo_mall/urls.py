@@ -15,17 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.http import HttpResponse
+# from django.http import HttpResponse
+#
+# def log(request):
+#     import logging
+#     logger = logging.getLogger('django')
+#     logger.info('用户登陆了 ')
+#     logger.warning('Redis缓存不足')
+#     logger.error('该记录不存在')
+#     logger.debug('~~~~~~~~~~~~~~')
+#     return HttpResponse("log")
+# 注册转换器
+from utlis.converters import UsernameConverter
+from  django.urls import register_converter
 
-
-def log(request):
-    import logging
-    logger = logging.getLogger('django')
-    logger.info('用户登陆了 ')
-    logger.warning('Redis缓存不足')
-    logger.error('该记录不存在')
-    logger.debug('~~~~~~~~~~~~~~')
-    return HttpResponse("log")
+register_converter(UsernameConverter, 'username')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
