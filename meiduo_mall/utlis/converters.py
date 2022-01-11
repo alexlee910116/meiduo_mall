@@ -7,3 +7,11 @@ class UsernameConverter:
 
     def to_python(self,value):
         return str(value)
+
+class MobileConverter:
+    """自定义路由转换器去匹配手机号"""
+    # 定义匹配手机号的正则表达式
+    regex = '1[3456789]\d{9}'
+
+    def to_python(self,value):
+        return str(value)
