@@ -26,12 +26,14 @@ from django.urls import path, include
 #     logger.debug('~~~~~~~~~~~~~~')
 #     return HttpResponse("log")
 # 注册转换器
-from utlis.converters import UsernameConverter
-from utlis.converters import MobileConverter
-from  django.urls import register_converter
+from utils.converters import UsernameConverter
+from utils.converters import UUIDConverter
+from utils.converters import MobileConverter
+from django.urls import register_converter
 
 register_converter(UsernameConverter, 'username')
 register_converter(MobileConverter, 'mobile')
+register_converter(UUIDConverter,'uuid')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
