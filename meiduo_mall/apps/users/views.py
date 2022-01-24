@@ -129,6 +129,9 @@ from utils.views import LoginRequiredJSONMixin
 class InfoView(LoginRequiredJSONMixin, View):
     def get(self, request):
         # request.user 已经登录的用户信息
+        # request.user 来源于中间件
+        # 系统会进行判断，如果确实是登录用户，则可以取得 登录用户对应的模型实例数据
+        # 如果不是登录用户，request.user = AnoymousUser
         info_data = {
             'username': request.user.username,
             'email': request.user.email,
@@ -136,3 +139,17 @@ class InfoView(LoginRequiredJSONMixin, View):
             'email_active': request.user.email_active,
         }
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'info_data': info_data})
+
+
+class EmailView(LoginRequiredJSONMixin, View):
+    def put(self, request):
+        # 1.接受请求
+        data = json.loads(request.body.decode())
+        # 2.获取数据
+        email = data.get('email')
+        user = request.user
+        # user/request就是登录用户 实例对象
+        user.email = email
+        user.save()
+
+        return JsonResponse({'code': 0, 'errmsg': 'ok'})
