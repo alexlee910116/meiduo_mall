@@ -19,7 +19,7 @@ class MobileCountView(View):
     """判断手机号是否重复注册"""
 
     def get(self, request, mobile):
-        if not re.match('1[3456789]\d{9}', username):
+        if not re.match('1[3456789]\d{9}', mobile):
             return JsonResponse({'code': 200, 'errmsg': '手机号输入有误'})
         count = User.objects.filter(mobile=mobile).count()
         return JsonResponse({'code': 0, 'errmsg': 'OK', 'count': count})
@@ -123,9 +123,16 @@ class LogoutView(View):
 
 # 用户中心必须为登录用户
 # LoginRequiredMixin 未登录用户会返回重定向
-from django.contrib.auth.mixins import LoginRequiredMixin
+from utils.views import LoginRequiredJSONMixin
 
 
-class CenterView(LoginRequiredMixin, View):
+class InfoView(LoginRequiredJSONMixin, View):
     def get(self, request):
-        return
+        # request.user 已经登录的用户信息
+        info_data = {
+            'username': request.user.username,
+            'email': request.user.email,
+            'mobile': request.user.mobile,
+            'email_active': request.user.email_active,
+        }
+        return JsonResponse({'code': 0, 'errmsg': 'ok', 'info_data': info_data})
