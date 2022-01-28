@@ -123,6 +123,7 @@ class LogoutView(View):
 
 # 用户中心必须为登录用户
 # LoginRequiredMixin 未登录用户会返回重定向
+
 from utils.views import LoginRequiredJSONMixin
 
 
@@ -151,5 +152,24 @@ class EmailView(LoginRequiredJSONMixin, View):
         # user/request就是登录用户 实例对象
         user.email = email
         user.save()
+
+        from django.core.mail import send_mail
+        # subject, message, from_email, recipient_list
+
+        subject = '美多商城激活邮件'
+        message = ''
+        from_email = '美多商城<alexlee910116@gmail.com>'
+        recipient_list = ['alexlee910116@gmail.com']
+        # user_id=1
+        from apps.users.utils import generic_email_verify_token
+        token = generic_email_verify_token(request.user.id)
+
+        html_message = "点击按钮进行激活 <a href='https://www.google.com/?token=%s'>激活</a>" % token
+
+        send_mail(subject=subject,
+                  message=message,
+                  from_email=from_email,
+                  recipient_list=recipient_list,
+                  html_message=html_message, )
 
         return JsonResponse({'code': 0, 'errmsg': 'ok'})

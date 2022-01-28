@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'wj*s#7hygq^)yb4*hf6f7^am^qz^&u4_7!!wqz$3qebjzg*wat'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -74,7 +72,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -88,7 +85,6 @@ DATABASES = {
         'NAME': 'meiduo_mall',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -108,7 +104,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -122,7 +117,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -130,21 +124,21 @@ STATIC_URL = '/static/'
 
 # Django Redis
 CACHES = {
-    "default": { # 预留
+    "default": {  # 预留
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/0 ",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    "session": { # session
+    "session": {  # session
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    "code": { # code
+    "code": {  # code
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/2",
         "OPTIONS": {
@@ -197,9 +191,7 @@ LOGGING = {
     }
 }
 
-
 AUTH_USER_MODEL = 'users.User'
-
 
 # CORS
 CORS_ORIGIN_WHITELIST = (
@@ -209,3 +201,13 @@ CORS_ORIGIN_WHITELIST = (
     'http://www.meiduo.site:8000'
 )
 CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
+
+# 邮件发送相关
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #設定しなくてもデフォルトでこの値になるっぽい
+EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST = 'smtp.googlemail.com' #これでもいける
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'alexlee910116@gmail.com'
+EMAIL_HOST_PASSWORD = 'lsahduekkhyivumf'
