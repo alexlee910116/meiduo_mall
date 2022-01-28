@@ -6,7 +6,7 @@ logger = logging.getLogger('django')
 
 
 # name：异步任务别名
-@celery_app.task(name='send_sms_code')
+@celery_app.task(name='celery_send_sms')
 def send_sms_code(mobile, sms_code):
     """
     发送短信异步任务

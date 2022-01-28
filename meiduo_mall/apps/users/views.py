@@ -163,13 +163,24 @@ class EmailView(LoginRequiredJSONMixin, View):
         # user_id=1
         from apps.users.utils import generic_email_verify_token
         token = generic_email_verify_token(request.user.id)
+        verify_url = 'https://www.meiduo.site:8080/success_verify_email.html?token=%s' % token
+        html_message = '<p>尊敬的用户您好！</p>' \
+                       '<p>感谢您使用美多商城。</p>' \
+                       '<p>您的邮箱为：%s 。请点击此链接激活您的邮箱：</p>' \
+                       '<p><a href="%s">%s<a></p>' % (email, verify_url, verify_url)
 
-        html_message = "点击按钮进行激活 <a href='https://www.google.com/?token=%s'>激活</a>" % token
-
-        send_mail(subject=subject,
-                  message=message,
-                  from_email=from_email,
-                  recipient_list=recipient_list,
-                  html_message=html_message, )
+        # send_mail(subject=subject,
+        #           message=message,
+        #           from_email=from_email,
+        #           recipient_list=recipient_list,
+        #           html_message=html_message, )
+        from celery_tasks.email.tasks import celery_send_email
+        celery_send_email.delay(
+            subject=subject,
+            message=message,
+            from_email=from_email,
+            recipient_list=recipient_list,
+            html_message=html_message
+        )
 
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
