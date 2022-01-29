@@ -159,7 +159,7 @@ class EmailView(LoginRequiredJSONMixin, View):
         subject = '美多商城激活邮件'
         message = ''
         from_email = '美多商城<alexlee910116@gmail.com>'
-        recipient_list = ['alexlee910116@gmail.com']
+        recipient_list = [email]
         # user_id=1
         from apps.users.utils import generic_email_verify_token
         token = generic_email_verify_token(request.user.id)
@@ -183,4 +183,21 @@ class EmailView(LoginRequiredJSONMixin, View):
             html_message=html_message
         )
 
+        return JsonResponse({'code': 0, 'errmsg': 'ok'})
+
+
+class EmailVerifyView(View):
+    def put(self, request):
+        params = request.GET
+        token = params.get('token')
+        if token is None:
+            return JsonResponse({'code': 400, 'errmsg': '参数丢失'})
+        from apps.users.utils import check_verify_token
+        user_id = check_verify_token(token)
+        if user_id is None:
+            return JsonResponse({'code': 400, 'errmsg': '参数错误'})
+
+        user = User.objects.get(id=user_id)
+        user.email_active = True
+        user.save()
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
