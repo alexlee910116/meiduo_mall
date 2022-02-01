@@ -159,7 +159,7 @@ class EmailView(LoginRequiredJSONMixin, View):
         subject = '美多商城激活邮件'
         message = ''
         from_email = '美多商城<alexlee910116@gmail.com>'
-        recipient_list = [email]
+        recipient_list = ['alexlee910116@gmail.com']
         # user_id=1
         from apps.users.utils import generic_email_verify_token
         token = generic_email_verify_token(request.user.id)
