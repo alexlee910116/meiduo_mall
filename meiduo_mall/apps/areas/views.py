@@ -74,3 +74,4 @@ class SubAreaView(View):
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'sub_data': {'subs': data_list}})
 
 # 不经常发生变化的数据 最好缓存到redis，减少数据库查询
+
