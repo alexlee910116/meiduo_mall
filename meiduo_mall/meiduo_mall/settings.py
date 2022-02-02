@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.verifications',
     'apps.areas',
     'apps.goods',
+    'apps.contents',
 ]
 
 MIDDLEWARE = [
