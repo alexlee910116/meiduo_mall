@@ -60,7 +60,7 @@ ROOT_URLCONF = 'meiduo_mall.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -207,10 +207,14 @@ CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
 
 # 邮件发送相关
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #設定しなくてもデフォルトでこの値になるっぽい
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # 設定しなくてもデフォルトでこの値になるっぽい
 EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_HOST = 'smtp.googlemail.com' #これでもいける
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'alexlee910116@gmail.com'
 EMAIL_HOST_PASSWORD = 'lsahduekkhyivumf'
+
+# 加载自定义文件存储类
+# 指定自定义的Django文件存储类
+DEFAULT_FILE_STORAGE = 'utils.fastdfs.storage.MyStorage'
