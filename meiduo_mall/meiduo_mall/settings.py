@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.areas',
     'apps.goods',
     'apps.contents',
+    'haystack',
 ]
 
 MIDDLEWARE = [
@@ -218,3 +219,13 @@ EMAIL_HOST_PASSWORD = 'lsahduekkhyivumf'
 # 加载自定义文件存储类
 # 指定自定义的Django文件存储类
 DEFAULT_FILE_STORAGE = 'utils.fastdfs.storage.MyStorage'
+
+
+# es的配置
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
+        'URL': 'http://192.168.0.103:9200/',
+        'INDEX_NAME': 'meiduo',
+    },
+}
