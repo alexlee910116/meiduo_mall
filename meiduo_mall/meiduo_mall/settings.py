@@ -220,7 +220,6 @@ EMAIL_HOST_PASSWORD = 'lsahduekkhyivumf'
 # 指定自定义的Django文件存储类
 DEFAULT_FILE_STORAGE = 'utils.fastdfs.storage.MyStorage'
 
-
 # es的配置
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -229,3 +228,6 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'meiduo',
     },
 }
+
+# 设置搜索 每页返回记录条数
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 5
