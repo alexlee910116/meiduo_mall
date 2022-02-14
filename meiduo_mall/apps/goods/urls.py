@@ -1,6 +1,6 @@
 from django.urls import path
 from apps.goods.views import IndexView, ListView, HotGoodsView
-from apps.goods.views import SKUSearchView, DetailView
+from apps.goods.views import SKUSearchView, DetailView, CategoryVisitCountView, UserHistoryView
 
 urlpatterns = [
     path('index/', IndexView.as_view()),
@@ -8,5 +8,7 @@ urlpatterns = [
     path('hot/<category_id>/', HotGoodsView.as_view()),
     path('search/', SKUSearchView()),
     path('detail/<sku_id>/', DetailView.as_view()),
+    path('detail/visit/<category_id>/', CategoryVisitCountView.as_view()),
+    path('browse_histories/', UserHistoryView.as_view()),
 
 ]
