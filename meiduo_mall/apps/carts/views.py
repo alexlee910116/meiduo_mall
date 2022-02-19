@@ -399,7 +399,7 @@ class CartsView(View):
             if sku_id in carts:
                 # 购物车中 已经有该商品id
                 # 数量累加
-                ## {16： {count:3,selected:True}}
+                # {16： {count:3,selected:True}}
                 origin_count = carts[sku_id]['count']
                 count += origin_count
 
@@ -526,3 +526,60 @@ class CartsView(View):
             })
         # 6 返回响应
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'cart_skus': sku_list})
+
+    def put(self, request):
+        """修改购物车"""
+
+        # 接收和校验参数
+        # 判断用户是否登录
+        user = request.user
+        data = json.loads(request.body.decode())
+        sku_id = data.get('sku_id')
+        count = data.get('count')
+        selected = data.get('selected ')
+
+        if not all([sku_id, count]):
+            return JsonResponse({'code': 400, 'errmsg': '参数不全'})
+
+        try:
+            SKU.objects.get(id=sku_id)
+        except SKU.DoesNotExist:
+            return JsonResponse({'code': 400, 'errmsg': '没有此商品'})
+
+        try:
+            count = int(count)
+        except Exception:
+            count = 1
+
+        if user.is_authenticated:
+            # 用户已登录，修改redis购物车
+            redis_cli = get_redis_connection('carts')
+            redis_cli.hset('carts_%s' % user.id, sku_id, count)
+            if selected:
+                redis_cli.sadd('selected_%s' % user.id, sku_id)
+            else:
+                redis_cli.srem('selected_%s' % user.id, sku_id)
+
+            return JsonResponse({'code': 0, 'errmsg': 'ok', 'cart_sku': {'count': count, 'selected': selected}})
+
+
+        else:
+            # 用户未登录，修改cookie购物车
+            cookie_carts = request.COOKIES.get('carts')
+            if cookie_carts is not None:
+                #         如果存在，则解码            {sku_id:{count:xxx,selected:xxx}}
+                carts = pickle.loads(base64.b64decode(cookie_carts))
+            else:
+                #         如果不存在，初始化空字典
+                carts = {}
+
+            if sku_id in carts:
+                carts[sku_id] = {
+                    'count': count,
+                    'selected': selected
+                }
+            new_carts = base64.b64encode(pickle.dumps(carts))
+            response = JsonResponse({'code': 0, 'errmsg': 'ok', 'cart_sku': {'count': count, 'selected': selected}})
+            response.set_cookie('carts', new_carts.decode(), max_age=3600 * 24 * 12)
+            return response
+
