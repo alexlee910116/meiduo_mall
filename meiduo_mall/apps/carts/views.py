@@ -539,7 +539,7 @@ class CartsView(View):
 
     def delete(self, request):
         # 1.接收请求
-         data = json.loads(request.body.decode())
+        data = json.loads(request.body.decode())
         # 2.验证参数
         sku_id = data.get('sku_id')
         try:

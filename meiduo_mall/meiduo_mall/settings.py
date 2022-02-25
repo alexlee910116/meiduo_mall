@@ -43,9 +43,11 @@ INSTALLED_APPS = [
     'apps.goods',
     'apps.contents',
     'apps.carts',
+    'apps.orders',
     'haystack',
     'django_crontab',
     'django_celery_beat',
+
 ]
 
 MIDDLEWARE = [
